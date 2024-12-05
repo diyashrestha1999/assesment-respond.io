@@ -14,7 +14,11 @@
       <MiniMap />
 
       <Controls position="top-left">
-        <v-btn class="ml-2 text-capitalize" @click="handleCreateNodeDialogOpen">
+        <v-btn
+          class="ml-2 text-capitalize"
+          color="secondary"
+          @click="handleCreateNodeDialogOpen"
+        >
           Create new node
         </v-btn>
       </Controls>
@@ -106,7 +110,7 @@ const nodeTypes = markRaw({
 const nodeVariants = [
   { title: "Send Message", value: "sendMessage" },
   { title: "Add Comment", value: "addComment" },
-  { title: "Business Hour", value: "businessHour" },
+  { title: "Business Hour", value: "businessHours" },
 ];
 
 const defaultNodeDialog = {
@@ -210,6 +214,18 @@ async function createNode() {
       type: nodeDialog.value.values.type,
     },
   };
+
+  if (nodeDialog.value.values.type === "businessHours") {
+    newNode.data.times = [
+      { startTime: "09:00", endTime: "17:00", day: "mon" },
+      { startTime: "09:00", endTime: "17:00", day: "tue" },
+      { startTime: "09:00", endTime: "17:00", day: "wed" },
+      { startTime: "09:00", endTime: "17:00", day: "thu" },
+      { startTime: "09:00", endTime: "17:00", day: "fri" },
+      { startTime: "09:00", endTime: "17:00", day: "sat" },
+      { startTime: "09:00", endTime: "17:00", day: "sun" },
+    ];
+  }
 
   addNodes([newNode]);
   nodeStore.addNode(newNode);

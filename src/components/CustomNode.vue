@@ -1,34 +1,46 @@
 <template>
-  <div class="text-black bg-white" style="max-width: 200px">
+  <div
+    class="text-black"
+    :class="[route.params.id == props.id ? 'bg-secondary' : 'bg-white']"
+    style="max-width: 200px"
+  >
     <div class="d-flex align-center px-3 py-2">
-      <v-icon v-if="data.icon" :color="data.color" size="15px" class="mr-2">
-        {{ data.icon }}
+      <v-icon
+        v-if="props.data.icon"
+        :color="props.data.color"
+        size="15px"
+        class="mr-2"
+      >
+        {{ props.data.icon }}
       </v-icon>
 
       <div class="text-caption text-capitalize">
-        {{ data.label }}
+        {{ props.data.label }}
       </div>
     </div>
 
-    <v-divider v-if="!data.connectorType" class="border-opacity-25" />
+    <v-divider v-if="!props.data.connectorType" class="border-opacity-25" />
 
     <div class="text-grey-darken-3">
-      <div v-if="data.comment" class="px-3 py-2">
-        {{ truncateString(data.comment, 70) }}
+      <div v-if="props.data.comment" class="px-3 py-2">
+        {{ truncateString(props.data.comment, 70) }}
       </div>
 
-      <div v-else-if="data.type === 'conversationOpened'" class="px-3 py-2">
+      <div
+        v-else-if="props.data.type === 'conversationOpened'"
+        class="px-3 py-2"
+      >
         Conversation Opened
       </div>
 
-      <div v-else-if="data.action === 'businessHours'" class="px-3 py-2">
+      <div v-else-if="props.data.action === 'businessHours'" class="px-3 py-2">
         Business Hours - UTC
       </div>
 
-      <div v-else-if="data.payload" class="px-3 py-2">
+      <div v-else-if="props.data.payload" class="px-3 py-2">
         Message: <br />
         <span class="font-italic">
-          {{ truncateString(data.payload[0].text, 70) }}
+          {{ truncateString(props.data.payload[0].text, 70) }}
         </span>
       </div>
     </div>
@@ -37,11 +49,17 @@
 
 <script setup>
 import { truncateString } from "@/utils/misc.js";
+import { useRoute } from "vue-router";
 
-defineProps({
+const props = defineProps({
+  id: {
+    type: String,
+  },
   data: {
     type: Object,
     required: true,
   },
 });
+
+const route = useRoute();
 </script>
