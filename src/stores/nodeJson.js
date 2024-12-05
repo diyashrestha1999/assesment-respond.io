@@ -1,4 +1,7 @@
-export const nodesData = [
+import { defineStore } from "pinia";
+import { nodeMapperConst } from "@/constants/nodesData.js";
+
+const nodesData = [
   {
     id: 1,
     parentId: -1,
@@ -77,8 +80,7 @@ export const nodesData = [
     data: { comment: "User message during off hours" },
   },
 ];
-
-export const nodeMapperConst = {
+const nodeMapper = {
   // trigger
   1: {
     icon: "mdi-lightning-bolt-outline",
@@ -120,3 +122,43 @@ export const nodeMapperConst = {
     position: { x: 431.5, y: 600 },
   },
 };
+
+export const useNodeJsonStore = defineStore("nodeJson", {
+  state: () => ({
+    nodesData: nodesData,
+  }),
+  getters: {
+    getNodeDetail: (state) => (id) =>
+      state.nodesData.find((node) => node.id == id),
+
+    nodeMapper: () => (nodesData) => {
+      const filteredNodes = nodesData.filter((node) => {
+        return !Object.keys(nodeMapperConst).includes(node.id.toString());
+      });
+
+      const updatedNodes = filteredNodes.reduce((acc, node) => {
+        acc[node.id] = node;
+        return acc;
+      }, {});
+
+      return {
+        ...nodeMapperConst,
+        ...updatedNodes,
+      };
+    },
+  },
+  actions: {
+    updateNode(id, payload) {
+      const index = this.nodesData.findIndex((node) => node.id == id);
+      if (index !== -1) {
+        this.nodesData[index].data = {
+          ...this.nodesData[index].data,
+          ...payload,
+        };
+      }
+    },
+    addNode(node) {
+      this.nodesData.push(node);
+    },
+  },
+});

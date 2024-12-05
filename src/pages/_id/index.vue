@@ -8,11 +8,11 @@ import { useDrawerStore } from "@/stores/drawer.js";
 
 const drawerStore = useDrawerStore();
 
-onBeforeMount(() => {
+onMounted(() => {
   setDrawer();
 });
 
 function setDrawer() {
-  drawerStore.isDrawerOpen = false;
+  drawerStore.isDrawerOpen = true;
 }
 </script>

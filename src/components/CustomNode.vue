@@ -1,54 +1,47 @@
-<script setup>
-import { Handle, Position } from '@vue-flow/core'
-
-const counter = ref(0)
-</script>
-
 <template>
-  <div class="custom-node">
-    <Handle type="target" :position="Position.Top" />
-    <button class="increment nodrag" @click="counter++">Increment</button>
+  <div class="text-black bg-white" style="max-width: 200px">
+    <div class="d-flex align-center px-3 py-2">
+      <v-icon v-if="data.icon" :color="data.color" size="15px" class="mr-2">
+        {{ data.icon }}
+      </v-icon>
 
-    <div v-if="counter > 0" class="counter">
-      <div class="count" v-for="count of counter" :key="`count-${count}`">{{ count }}</div>
+      <div class="text-caption text-capitalize">
+        {{ data.label }}
+      </div>
+    </div>
+
+    <v-divider v-if="!data.connectorType" class="border-opacity-25" />
+
+    <div class="text-grey-darken-3">
+      <div v-if="data.comment" class="px-3 py-2">
+        {{ truncateString(data.comment, 70) }}
+      </div>
+
+      <div v-else-if="data.type === 'conversationOpened'" class="px-3 py-2">
+        Conversation Opened
+      </div>
+
+      <div v-else-if="data.action === 'businessHours'" class="px-3 py-2">
+        Business Hours - UTC
+      </div>
+
+      <div v-else-if="data.payload" class="px-3 py-2">
+        Message: <br />
+        <span class="font-italic">
+          {{ truncateString(data.payload[0].text, 70) }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
-<style>
-.custom-node {
-  min-width: 100px;
-  gap: 4px;
-  padding: 8px;
-  background: white;
-  border: 1px solid black;
-  border-radius: 4px;
-}
+<script setup>
+import { truncateString } from "@/utils/misc.js";
 
-.increment {
-  border-radius: 4px;
-  background: #42b983;
-  font-size: 10px;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-}
-
-.increment:hover {
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
-.counter {
-  margin-top: 8px;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px;
-}
-
-.count {
-  font-size: 6px;
-  color: #ff0072;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-}
-</style>
+defineProps({
+  data: {
+    type: Object,
+    required: true,
+  },
+});
+</script>
