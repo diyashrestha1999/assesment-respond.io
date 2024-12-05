@@ -11,6 +11,11 @@
   },
   "dependencies": {
     "@mdi/font": "7.4.47",
+    "@vue-flow/background": "latest",
+    "@vue-flow/controls": "latest",
+    "@vue-flow/core": "latest",
+    "@vue-flow/minimap": "latest",
+    "prettier": "^3.4.2",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
     "vuetify": "^3.6.14"
